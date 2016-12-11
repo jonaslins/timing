@@ -26,6 +26,8 @@ PImage esquerdo;
 int combo;
 PFont font;
 boolean gameOverBool = true;
+boolean introSoundBool =true;
+boolean gameoverSoundBool = true;
 
 
 void setup(){
@@ -41,7 +43,6 @@ void setup(){
  esquerdo = loadImage("esquerdo.png");
  font = loadFont("data/Indocorno-48.vlw");
  textFont(font);
-
 
  //theme.loop();
  
@@ -73,8 +74,7 @@ void keyPressed(){
     if(key == 'Q' || key == 'q'){
       if(QArray.size() > 0){
         QArray.remove(0);
-        score++;
-        combo++;
+        validateScore();
       } else {
         life--;
       }
@@ -82,8 +82,7 @@ void keyPressed(){
     }else if (key == 'W' || key == 'w'){
       if(WArray.size() > 0){
         WArray.remove(0);
-        score++;
-        combo++;
+        validateScore();
       } else {
         life--;
       }
@@ -91,8 +90,7 @@ void keyPressed(){
     }else if (key == 'E' || key == 'e'){
       if(EArray.size() > 0){
         EArray.remove(0);
-        score++;
-        combo++;
+        validateScore();
       } else {
         life--;
       }
@@ -100,13 +98,21 @@ void keyPressed(){
     } else if (key == 'R' || key == 'r'){
       if(RArray.size() > 0){
         RArray.remove(0);
-        score++;
-        combo++;
+        validateScore();
       } else {
         life--;
       }
     }
    }
+}
+
+void validateScore(){
+  pushMatrix();
+  translate(60, 80);
+  minim.loadSample("pressed.mp3").trigger();
+  score++;
+  combo++;
+   popMatrix();
 }
 
 void mousePressed(){
@@ -117,8 +123,7 @@ void mousePressed(){
     for(int i = 0; i < ESQArray.size(); i++){
       if(ESQArray.get(i).clicked(x, y)){
         ESQArray.remove(i);
-        score++;
-        combo++;
+        validateScore();
         if (score > highscore) highscore = score; 
         saveStrings("highscore", new String[]{highscore + ""});
       }
@@ -128,8 +133,7 @@ void mousePressed(){
     for(int i = 0; i < DIRArray.size(); i++){
       if(DIRArray.get(i).clicked(x, y)){
         DIRArray.remove(i);
-        score++;
-        combo++;
+        validateScore();
         if (score > highscore) highscore = score; 
         saveStrings("highscore", new String[]{highscore + ""});
       }
@@ -173,6 +177,7 @@ void scores(){
 }
 
 void startGame(){
+ gameoverSoundBool = true;
  frameRate(60);
  drawLifes();
  scores();
@@ -260,28 +265,42 @@ void initScreen(){
  frameRate(3);
  textSize(130);
  fill(255,0,0);
- textAlign(CENTER, CENTER);
- text("Timing" , width/2, height/3);
- textSize(52);
- textAlign(LEFT);
- if (tempInit == 0) {
-   text("Press Enter to start" , 50, height/1.5); 
-   tempInit++;
- } else if (tempInit == 1) { 
-   text("Press Enter to start." , 50, height/1.5); 
-   tempInit++; 
- } else if (tempInit == 2) {
-   text("Press Enter to start.." , 50, height/1.5); 
-   tempInit++;
- } else if (tempInit == 3) {
-   text("Press Enter to start..." , 50, height/1.5); 
-   tempInit = 0;
- }
+ if (millis() > 500){
+   if(introSoundBool){
+       minim.loadSample("intro.mp3").trigger();
+       introSoundBool =false;
+   }
+   textAlign(CENTER, CENTER);
+   text("Timing" , width/2, height/3);
+   
+   
+   textSize(52);
+   textAlign(LEFT);
+   if (millis() > 3600)
+     if (tempInit == 0) {
+       text("Press Enter to start" , 50, height/1.5); 
+       tempInit++;
+     } else if (tempInit == 1) { 
+       text("Press Enter to start." , 50, height/1.5); 
+       tempInit++; 
+     } else if (tempInit == 2) {
+       text("Press Enter to start.." , 50, height/1.5); 
+       tempInit++;
+     } else if (tempInit == 3) {
+       text("Press Enter to start..." , 50, height/1.5); 
+       tempInit = 0;
+     }
+  }
+
+ 
 }
 
 
 void gameOver(){
-  
+ if(gameoverSoundBool){
+   minim.loadSample("gameover.mp3").trigger();
+   gameoverSoundBool = false;
+ }
  frameRate(3);
  textSize(130);
  fill(255,0,0);
