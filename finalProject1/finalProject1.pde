@@ -21,6 +21,10 @@ PImage heart;
 String[] highscoreFile;
 int tempInit;
 int state = 0;
+PImage direito;
+PImage esquerdo;
+int combo;
+
 
 void setup(){
  size(800, 600); 
@@ -31,7 +35,11 @@ void setup(){
  highscoreFile = loadStrings("highscore");
  highscore = Integer.valueOf(highscoreFile[0]);
  tempInit = 0;
- theme.loop();
+ direito = loadImage("direito.png");
+ esquerdo = loadImage("esquerdo.png");
+
+
+ //theme.loop();
  
 }
 
@@ -52,34 +60,44 @@ void keyPressed(){
   
     
     if (keyCode == 10 ){
-      println("adas");
       if (state == 2) restart();
       state = 1;
-   
     }
     
     if(key == 'Q' || key == 'q'){
       if(QArray.size() > 0){
         QArray.remove(0);
         score++;
+        combo++;
+      } else {
+        life--;
       }
       
     }else if (key == 'W' || key == 'w'){
       if(WArray.size() > 0){
         WArray.remove(0);
         score++;
+        combo++;
+      } else {
+        life--;
       }
       
     }else if (key == 'E' || key == 'e'){
       if(EArray.size() > 0){
         EArray.remove(0);
         score++;
+        combo++;
+      } else {
+        life--;
       }
       
-    }else if (key == 'R' || key == 'r'){
+    } else if (key == 'R' || key == 'r'){
       if(RArray.size() > 0){
         RArray.remove(0);
         score++;
+        combo++;
+      } else {
+        life--;
       }
       
     }
@@ -93,6 +111,7 @@ void mousePressed(){
       if(ESQArray.get(i).clicked(x, y)){
         ESQArray.remove(i);
         score++;
+        combo++;
         if (score > highscore) highscore = score; 
         saveStrings("highscore", new String[]{highscore + ""});
       }
@@ -103,6 +122,7 @@ void mousePressed(){
       if(DIRArray.get(i).clicked(x, y)){
         DIRArray.remove(i);
         score++;
+        combo++;
         if (score > highscore) highscore = score; 
         saveStrings("highscore", new String[]{highscore + ""});
       }
@@ -119,13 +139,14 @@ void restart(){
   ESQArray = new ArrayList<Object>();
   
   
-  QArray.add(new Object("Q"));
-  WArray.add(new Object("W"));
-  RArray.add(new Object("R"));
+  QArray.add(new Object("Q", null));
+  WArray.add(new Object("W", null));
+  RArray.add(new Object("R", null));
   
   score = 0;
   life = 3;
   time = 0;
+  combo = 0;
   
 }
 
@@ -139,7 +160,7 @@ void scores(){
  textSize(40);
  fill(255,0,0);
  text("Score: " + score, 0, 30);
- text("Highscore: " + highscore, 0, 70);
+ text("Combo: " + combo, 0, 70);
   
 }
 
@@ -148,28 +169,36 @@ void startGame(){
  drawLifes();
  scores();
  
+ if (combo >= 10) {
+  combo = 0;
+  if (life < 5) life ++;
+ }
+ 
+ if(life <= 0) {
+  state = 2; 
+ }
  
  if(time > 35 - log(score * 1000)) {
   int random = (int)random(0,6);
   
   switch (random) {
       case 0:
-      QArray.add(new Object("Q"));
+      QArray.add(new Object("Q", null));
       break;
       case 1:
-      WArray.add(new Object("W"));
+      WArray.add(new Object("W", null));
       break;
       case 2:
-      EArray.add(new Object("E"));
+      EArray.add(new Object("E", null));
       break;
       case 3:
-      RArray.add(new Object("R"));
+      RArray.add(new Object("R", null));
       break;
       case 4:
-      DIRArray.add(new Object("DIR"));
+      DIRArray.add(new Object("DIR", direito));
       break;
       case 5:
-      ESQArray.add(new Object("ESQ"));
+      ESQArray.add(new Object("ESQ", esquerdo));
       break;
   }
   
@@ -184,7 +213,7 @@ void startGame(){
   if(QArray.get(i).update()) {
     QArray.remove(i);
     life--;
-    if(life == 0){
+    if(life <= 0){
      state = 2;
     }
   }
@@ -193,7 +222,7 @@ void startGame(){
   if(WArray.get(i).update()) {
     WArray.remove(i);
     life--;
-    if(life == 0){
+    if(life  <= 0){
       state = 2;
     }
   }
@@ -202,7 +231,7 @@ void startGame(){
   if(EArray.get(i).update()) {
     EArray.remove(i);
     life--;
-    if(life == 0){
+    if(life <= 0){
      state = 2;
     }
   }
@@ -211,7 +240,7 @@ void startGame(){
   if(RArray.get(i).update()) {
     RArray.remove(i);
     life--;
-    if(life == 0){
+    if(life <= 0){
      state = 2;
     }
   }
@@ -220,7 +249,7 @@ void startGame(){
   if(DIRArray.get(i).update()) {
     DIRArray.remove(i);
     life--;
-    if(life == 0){
+    if(life <= 0){
      state = 2;
     }
   }
@@ -229,7 +258,7 @@ void startGame(){
   if(ESQArray.get(i).update()) {
     ESQArray.remove(i);
     life--;
-    if(life == 0){
+    if(life <= 0){
      state = 2;
     }
   }
