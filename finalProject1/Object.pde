@@ -19,7 +19,7 @@ class Object {
    this.y += speed;
    stroke(this.objColor);
    fill(objColor);
-   rect(this.x, this.y, SIZE, SIZE);
+   //rect(this.x, this.y, SIZE, SIZE);
    fill(255);
    if (png == null) {
     text(text ,this.x + 3, this.y + SIZE); 

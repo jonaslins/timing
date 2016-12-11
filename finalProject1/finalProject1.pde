@@ -24,6 +24,8 @@ int state = 0;
 PImage direito;
 PImage esquerdo;
 int combo;
+PFont font;
+boolean gameOverBool = true;
 
 
 void setup(){
@@ -37,6 +39,8 @@ void setup(){
  tempInit = 0;
  direito = loadImage("direito.png");
  esquerdo = loadImage("esquerdo.png");
+ font = loadFont("data/Indocorno-48.vlw");
+ textFont(font);
 
 
  //theme.loop();
@@ -163,8 +167,8 @@ void drawLifes(){
 void scores(){
  textSize(40);
  fill(255,0,0);
- text("Score: " + score, 0, 30);
- text("Combo: " + combo, 0, 70);
+ text("Score: " + score, 5, 50);
+ text("Combo: " + combo, 5, 110);
   
 }
 
@@ -258,7 +262,7 @@ void initScreen(){
  fill(255,0,0);
  textAlign(CENTER, CENTER);
  text("Timing" , width/2, height/3);
- textSize(70);
+ textSize(52);
  textAlign(LEFT);
  if (tempInit == 0) {
    text("Press Enter to start" , 50, height/1.5); 
@@ -282,22 +286,26 @@ void gameOver(){
  textSize(130);
  fill(255,0,0);
  textAlign(CENTER, CENTER);
- text("GAME OVER" , width/2, height/3);
+ if (gameOverBool) {
+   text("GAME OVER" , width/2, height/3);
+ }
  textSize(50);
  text("Score: " + score, width/2, height/2);
  textSize(25);
  text("Highscore: " + highscore, width/2, height/1.7);
  textAlign(LEFT);
- textSize(70);
+ textSize(52);
  if (tempInit == 0) {
    text("Press Enter to start" , 50, height/1.3); 
    tempInit++;
+   gameOverBool = !gameOverBool;
  } else if (tempInit == 1) { 
    text("Press Enter to start." , 50, height/1.3); 
    tempInit++; 
  } else if (tempInit == 2) {
    text("Press Enter to start.." , 50, height/1.3); 
    tempInit++;
+   gameOverBool = !gameOverBool;
  } else if (tempInit == 3) {
    text("Press Enter to start..." , 50, height/1.3); 
    tempInit = 0;
