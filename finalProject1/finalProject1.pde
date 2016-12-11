@@ -64,6 +64,8 @@ void keyPressed(){
       state = 1;
     }
     
+    if(state == 1) {
+    
     if(key == 'Q' || key == 'q'){
       if(QArray.size() > 0){
         QArray.remove(0);
@@ -99,8 +101,8 @@ void keyPressed(){
       } else {
         life--;
       }
-      
     }
+   }
 }
 
 void mousePressed(){
@@ -213,54 +215,36 @@ void startGame(){
   if(QArray.get(i).update()) {
     QArray.remove(i);
     life--;
-    if(life <= 0){
-     state = 2;
-    }
   }
  }
  for(int i = 0; i < WArray.size(); i++){
   if(WArray.get(i).update()) {
     WArray.remove(i);
     life--;
-    if(life  <= 0){
-      state = 2;
-    }
   }
  }
  for(int i = 0; i < EArray.size(); i++){
   if(EArray.get(i).update()) {
     EArray.remove(i);
     life--;
-    if(life <= 0){
-     state = 2;
-    }
   }
  }
  for(int i = 0; i < RArray.size(); i++){
   if(RArray.get(i).update()) {
     RArray.remove(i);
     life--;
-    if(life <= 0){
-     state = 2;
-    }
   }
  }
  for(int i = 0; i < DIRArray.size(); i++){
   if(DIRArray.get(i).update()) {
     DIRArray.remove(i);
     life--;
-    if(life <= 0){
-     state = 2;
-    }
   }
  }
  for(int i = 0; i < ESQArray.size(); i++){
   if(ESQArray.get(i).update()) {
     ESQArray.remove(i);
     life--;
-    if(life <= 0){
-     state = 2;
-    }
   }
  }
 }
