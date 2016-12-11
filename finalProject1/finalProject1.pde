@@ -19,27 +19,45 @@ int life;
 int highscore;
 PImage heart;
 String[] highscoreFile;
+int tempInit;
+int state = 0;
 
 void setup(){
  size(800, 600); 
  minim = new Minim(this);
  theme = minim.loadFile("extremeaction.mp3");
- theme.loop();
  heart = loadImage("heart3dplz.gif");
  restart();
  highscoreFile = loadStrings("highscore");
  highscore = Integer.valueOf(highscoreFile[0]);
+ tempInit = 0;
+ theme.loop();
  
 }
 
 void draw(){
  background(0);
- startGame();
+ 
+ if (state == 0){
+   initScreen();
+ } else if (state == 1) {
+   startGame();
+ } else if (state == 2){
+   gameOver(); 
+ }
  
 }
 
 void keyPressed(){
-
+  
+    
+    if (keyCode == 10 ){
+      println("adas");
+      if (state == 2) restart();
+      state = 1;
+   
+    }
+    
     if(key == 'Q' || key == 'q'){
       if(QArray.size() > 0){
         QArray.remove(0);
@@ -100,6 +118,7 @@ void restart(){
   DIRArray = new ArrayList<Object>();
   ESQArray = new ArrayList<Object>();
   
+  
   QArray.add(new Object("Q"));
   WArray.add(new Object("W"));
   RArray.add(new Object("R"));
@@ -125,8 +144,10 @@ void scores(){
 }
 
 void startGame(){
+ frameRate(60);
  drawLifes();
  scores();
+ 
  
  if(time > 35 - log(score * 1000)) {
   int random = (int)random(0,6);
@@ -164,7 +185,7 @@ void startGame(){
     QArray.remove(i);
     life--;
     if(life == 0){
-     restart();
+     state = 2;
     }
   }
  }
@@ -173,7 +194,7 @@ void startGame(){
     WArray.remove(i);
     life--;
     if(life == 0){
-     restart();
+      state = 2;
     }
   }
  }
@@ -182,7 +203,7 @@ void startGame(){
     EArray.remove(i);
     life--;
     if(life == 0){
-     restart();
+     state = 2;
     }
   }
  }
@@ -191,7 +212,7 @@ void startGame(){
     RArray.remove(i);
     life--;
     if(life == 0){
-     restart();
+     state = 2;
     }
   }
  }
@@ -200,7 +221,7 @@ void startGame(){
     DIRArray.remove(i);
     life--;
     if(life == 0){
-     restart();
+     state = 2;
     }
   }
  }
@@ -209,10 +230,64 @@ void startGame(){
     ESQArray.remove(i);
     life--;
     if(life == 0){
-     restart();
+     state = 2;
     }
   }
  }
+}
+
+
+void initScreen(){
+ frameRate(3);
+ textSize(130);
+ fill(255,0,0);
+ textAlign(CENTER, CENTER);
+ text("Timing" , width/2, height/3);
+ textSize(70);
+ textAlign(LEFT);
+ if (tempInit == 0) {
+   text("Press Enter to start" , 50, height/1.5); 
+   tempInit++;
+ } else if (tempInit == 1) { 
+   text("Press Enter to start." , 50, height/1.5); 
+   tempInit++; 
+ } else if (tempInit == 2) {
+   text("Press Enter to start.." , 50, height/1.5); 
+   tempInit++;
+ } else if (tempInit == 3) {
+   text("Press Enter to start..." , 50, height/1.5); 
+   tempInit = 0;
+ }
+}
+
+
+void gameOver(){
+  
+ frameRate(3);
+ textSize(130);
+ fill(255,0,0);
+ textAlign(CENTER, CENTER);
+ text("GAME OVER" , width/2, height/3);
+ textSize(50);
+ text("Score: " + score, width/2, height/2);
+ textSize(25);
+ text("Highscore: " + highscore, width/2, height/1.7);
+ textAlign(LEFT);
+ textSize(70);
+ if (tempInit == 0) {
+   text("Press Enter to start" , 50, height/1.3); 
+   tempInit++;
+ } else if (tempInit == 1) { 
+   text("Press Enter to start." , 50, height/1.3); 
+   tempInit++; 
+ } else if (tempInit == 2) {
+   text("Press Enter to start.." , 50, height/1.3); 
+   tempInit++;
+ } else if (tempInit == 3) {
+   text("Press Enter to start..." , 50, height/1.3); 
+   tempInit = 0;
+ }
+  
 }
   
   
