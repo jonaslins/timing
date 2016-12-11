@@ -108,6 +108,7 @@ void keyPressed(){
 void mousePressed(){
   int x = mouseX;
   int y = mouseY;
+  if (state == 1) {
   if(mouseButton == LEFT){
     for(int i = 0; i < ESQArray.size(); i++){
       if(ESQArray.get(i).clicked(x, y)){
@@ -130,6 +131,7 @@ void mousePressed(){
       }
     }
   }
+ }
 }
 
 void restart(){
