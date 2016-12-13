@@ -107,12 +107,11 @@ void keyPressed(){
 }
 
 void validateScore(){
-  pushMatrix();
-  translate(60, 80);
+  
   minim.loadSample("pressed.mp3").trigger();
   score++;
   combo++;
-   popMatrix();
+
 }
 
 void mousePressed(){
@@ -124,8 +123,6 @@ void mousePressed(){
       if(ESQArray.get(i).clicked(x, y)){
         ESQArray.remove(i);
         validateScore();
-        if (score > highscore) highscore = score; 
-        saveStrings("highscore", new String[]{highscore + ""});
       }
     }
   } else {
@@ -134,8 +131,6 @@ void mousePressed(){
       if(DIRArray.get(i).clicked(x, y)){
         DIRArray.remove(i);
         validateScore();
-        if (score > highscore) highscore = score; 
-        saveStrings("highscore", new String[]{highscore + ""});
       }
     }
   }
@@ -297,6 +292,14 @@ void initScreen(){
 
 
 void gameOver(){
+  
+  if (score > highscore) {
+    
+  highscore = score; 
+  saveStrings("highscore", new String[]{highscore + ""});
+  
+  }
+  
  if(gameoverSoundBool){
    minim.loadSample("gameover.mp3").trigger();
    gameoverSoundBool = false;
